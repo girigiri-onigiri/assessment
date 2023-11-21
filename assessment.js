@@ -1,8 +1,8 @@
 'use sticrt';
-const userNameInput = document.getElementById('user-name');
+const userNameInput    = document.getElementById('user-name');
 const assessmentButton = document.getElementById('assessment');
-const resultDivision = document.getElementById('result-area');
-const tweetDivision = document.getElementById('tweet-area');
+const resultDivision   = document.getElementById('result-area');
+const tweetDivision    = document.getElementById('tweet-area');
 
 assessmentButton.onclick = () => {
   const userName = userNameInput.value;
@@ -12,19 +12,32 @@ assessmentButton.onclick = () => {
 
   //診断結果エリアの作成
   resultDivision.innerText = '';
-  const header = document.createElement('h3'); //h3タグを作る
-  header.innerText = '診断結果'; //中身の文章を設定
-  resultDivision.appendChild(header); //divの子要素として追加
+
+  // headerDivisionの作成
+  const headerDivision = document.createElement('div'); //divタグを作る
+  headerDivision.setAttribute('class', 'card-header text-bg-primary');
+  headerDivision.innerText = '診断結果'; //中身の文章を設定
+
+  //bodyDivisionの作成
+  const bodyDivision = document.createElement('div');
+  bodyDivision.setAttribute('class', 'card-body');
 
   const paragraph = document.createElement('p');
+  paragraph.setAttribute('class', 'card-text');
   const result = assessment(userName); //診断結果を取得
   paragraph.innerText = result;
-  resultDivision.appendChild(paragraph);
+  bodyDivision.appendChild(paragraph);
+
+  resultDivision.setAttribute('class', 'card');
+  resultDivision.setAttribute('style', 'max-width: 700px;');
+
+  resultDivision.appendChild(headerDivision);
+  resultDivision.appendChild(bodyDivision)
   //ツイートエリアの作成
   tweetDivision.innerText = '';
   const anchor = document.createElement('a');
   const hrefValue =
-  `https://twitter.com/intent/tweet?button_hashtag=${encodeURIComponent('あなたのいいところ')}&ref_src=twsrc%5Etfw`;
+    `https://twitter.com/intent/tweet?button_hashtag=${encodeURIComponent('あなたのいいところ')}&ref_src=twsrc%5Etfw`;
 
   anchor.setAttribute('href', hrefValue);
   anchor.setAttribute('class', 'twitter-hashtag-button');
@@ -70,7 +83,7 @@ function assessment(userName) {
 
   //文字のコード番号の合計を回答の数で割って添字の数値を求める
   const index = sumOfCharCode % answers.length;
-  let result = answers[index];
+  let result  = answers[index];
   result = result.replaceAll('###userName###', userName);
   return result;
 }
@@ -82,7 +95,7 @@ console.assert(
 
 
 userNameInput.onkeydown = event => {
-  if(event.key === 'Enter') {
+  if (event.key === 'Enter') {
     assessmentButton.onclick();
   }
 };
